@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -852,4 +851,1066 @@
                     </tr>
 
                     <tr>
-   
+                        <td>D8</td>
+                        <td>IN2</td>
+                        <td>Male-Male jumper</td>
+                    </tr>
+
+                    <tr>
+                        <td>D9</td>
+                        <td>IN3</td>
+                        <td>Male-Male jumper</td>
+                    </tr>
+
+                    <tr>
+                        <td>D10</td>
+                        <td>IN4</td>
+                        <td>Male-Male jumper</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🛞 Motor connections</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>L298N</th>
+                        <th>Motor group</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>OUT1 + OUT2</td>
+                        <td>M1 + M3</td>
+                        <td>Left side</td>
+                    </tr>
+
+                    <tr>
+                        <td>OUT3 + OUT4</td>
+                        <td>M2 + M4</td>
+                        <td>Right side</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🌍 Common ground</h3>
+
+            <div class="note success">
+
+                <strong>Everything that uses the Arduino's control signals
+                must share a common ground.</strong>
+
+                <br><br>
+
+                Battery − → Breadboard GND rail<br>
+                Arduino GND → Breadboard GND rail<br>
+                L298N GND → Breadboard GND rail
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>⚠️ Stage 1 safety checks</h3>
+
+            <div class="checklist">
+
+                <label>
+                    <input type="checkbox">
+                    Wheels are lifted off the ground for the first motor test.
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    Arduino GND and L298N GND share a common ground.
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    Battery voltage has been checked.
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    Motor wires are firmly connected.
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    L298N is not overheating.
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    Forward, backward and stop have been tested.
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- STAGE 2 -->
+    <!-- ===================================================== -->
+
+    <section class="stage" id="stage2">
+
+        <div class="card">
+
+            <h2>
+                <span class="stage-number">2</span>
+                Fire Detection & Approach
+            </h2>
+
+            <p class="subtitle">
+                Keep all Stage 1 wiring. Add three flame sensors and an LED.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🧰 Additional components</h3>
+
+            <div class="grid">
+
+                <div class="component">
+                    <strong>🔥 Left flame sensor</strong>
+                    3-pin module.
+                </div>
+
+                <div class="component">
+                    <strong>🔥 Center flame sensor</strong>
+                    3-pin module.
+                </div>
+
+                <div class="component">
+                    <strong>🔥 Right flame sensor</strong>
+                    3-pin module.
+                </div>
+
+                <div class="component">
+                    <strong>💡 LED</strong>
+                    Fire detected indicator.
+                </div>
+
+                <div class="component">
+                    <strong>220–330 Ω resistor</strong>
+                    Protects the LED.
+                </div>
+
+                <div class="component">
+                    <strong>🔌 Jumper wires</strong>
+                    Male-Male / Male-Female depending on headers.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🔥 Sensor placement</h3>
+
+            <div class="diagram">
+
+                <svg viewBox="0 0 1000 430">
+
+                    <rect
+                        class="svg-sensor"
+                        x="70"
+                        y="70"
+                        width="190"
+                        height="100"
+                        rx="15"
+                    />
+
+                    <text class="svg-text" x="115" y="110">
+                        LEFT SENSOR
+                    </text>
+
+                    <text class="svg-small" x="125" y="140">
+                        DO → D2
+                    </text>
+
+
+                    <rect
+                        class="svg-sensor"
+                        x="405"
+                        y="50"
+                        width="190"
+                        height="100"
+                        rx="15"
+                    />
+
+                    <text class="svg-text" x="440" y="90">
+                        CENTER SENSOR
+                    </text>
+
+                    <text class="svg-small" x="465" y="120">
+                        DO → D3
+                    </text>
+
+
+                    <rect
+                        class="svg-sensor"
+                        x="740"
+                        y="70"
+                        width="190"
+                        height="100"
+                        rx="15"
+                    />
+
+                    <text class="svg-text" x="780" y="110">
+                        RIGHT SENSOR
+                    </text>
+
+                    <text class="svg-small" x="800" y="140">
+                        DO → D4
+                    </text>
+
+
+                    <rect
+                        class="svg-board"
+                        x="330"
+                        y="260"
+                        width="340"
+                        height="100"
+                        rx="18"
+                    />
+
+                    <text class="svg-text" x="425" y="300">
+                        🤖 ROBOT FRONT
+                    </text>
+
+                    <text class="svg-small" x="395" y="330">
+                        LEFT • CENTER • RIGHT
+                    </text>
+
+
+                    <path
+                        class="wire wire-sensor"
+                        d="M165 170 L430 260"
+                    />
+
+                    <path
+                        class="wire wire-sensor"
+                        d="M500 150 L500 260"
+                    />
+
+                    <path
+                        class="wire wire-sensor"
+                        d="M835 170 L570 260"
+                    />
+
+                </svg>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🔌 Flame sensor wiring</h3>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Sensor</th>
+                        <th>Pin</th>
+                        <th>Connect to</th>
+                        <th>Wire</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>LEFT</td>
+                        <td>VCC</td>
+                        <td>Arduino 5V</td>
+                        <td>Jumper</td>
+                    </tr>
+
+                    <tr>
+                        <td>LEFT</td>
+                        <td>GND</td>
+                        <td>Common GND</td>
+                        <td>Jumper</td>
+                    </tr>
+
+                    <tr>
+                        <td>LEFT</td>
+                        <td>DO</td>
+                        <td>Arduino D2</td>
+                        <td>Signal jumper</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>CENTER</td>
+                        <td>VCC</td>
+                        <td>Arduino 5V</td>
+                        <td>Jumper</td>
+                    </tr>
+
+                    <tr>
+                        <td>CENTER</td>
+                        <td>GND</td>
+                        <td>Common GND</td>
+                        <td>Jumper</td>
+                    </tr>
+
+                    <tr>
+                        <td>CENTER</td>
+                        <td>DO</td>
+                        <td>Arduino D3</td>
+                        <td>Signal jumper</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>RIGHT</td>
+                        <td>VCC</td>
+                        <td>Arduino 5V</td>
+                        <td>Jumper</td>
+                    </tr>
+
+                    <tr>
+                        <td>RIGHT</td>
+                        <td>GND</td>
+                        <td>Common GND</td>
+                        <td>Jumper</td>
+                    </tr>
+
+                    <tr>
+                        <td>RIGHT</td>
+                        <td>DO</td>
+                        <td>Arduino D4</td>
+                        <td>Signal jumper</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>💡 LED wiring</h3>
+
+            <div class="flow">
+
+                <div class="flow-item">
+                    Arduino D12
+                </div>
+
+                <div class="flow-arrow">
+                    →
+                </div>
+
+                <div class="flow-item">
+                    220–330 Ω resistor
+                </div>
+
+                <div class="flow-arrow">
+                    →
+                </div>
+
+                <div class="flow-item">
+                    LED +
+                </div>
+
+                <div class="flow-arrow">
+                    →
+                </div>
+
+                <div class="flow-item">
+                    LED − → GND
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🔥 Fire direction logic</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Left</th>
+                        <th>Center</th>
+                        <th>Right</th>
+                        <th>Robot action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>OFF</td>
+                        <td>OFF</td>
+                        <td>OFF</td>
+                        <td>Search</td>
+                    </tr>
+
+                    <tr>
+                        <td>ON</td>
+                        <td>OFF</td>
+                        <td>OFF</td>
+                        <td>Turn left</td>
+                    </tr>
+
+                    <tr>
+                        <td>OFF</td>
+                        <td>ON</td>
+                        <td>OFF</td>
+                        <td>Move toward fire</td>
+                    </tr>
+
+                    <tr>
+                        <td>OFF</td>
+                        <td>OFF</td>
+                        <td>ON</td>
+                        <td>Turn right</td>
+                    </tr>
+
+                    <tr>
+                        <td>ON</td>
+                        <td>ON</td>
+                        <td>ON</td>
+                        <td>Stop + LED ON</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+            <div class="note">
+
+                <strong>Sensor logic:</strong>
+                The flame sensor module you linked uses its digital output
+                as an active-low signal. In the Arduino program,
+                <code>LOW</code> means flame detected.
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🧪 Stage 2 test order</h3>
+
+            <div class="checklist">
+
+                <label>
+                    <input type="checkbox">
+                    Test LEFT flame sensor by itself.
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    Test CENTER flame sensor by itself.
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    Test RIGHT flame sensor by itself.
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    Test the LED.
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    Test left/right motor response.
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    Test the complete fire approach.
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- STAGE 3 -->
+    <!-- ===================================================== -->
+
+    <section class="stage" id="stage3">
+
+        <div class="card">
+
+            <h2>
+                <span class="stage-number">3</span>
+                Water Extinguishing
+            </h2>
+
+            <p class="subtitle">
+                Keep Stages 1 and 2. Add the water system.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>💧 Additional components</h3>
+
+            <div class="grid">
+
+                <div class="component">
+                    <strong>Water tank</strong>
+                    Securely mounted.
+                </div>
+
+                <div class="component">
+                    <strong>Water pump</strong>
+                    Must match its supply voltage/current.
+                </div>
+
+                <div class="component">
+                    <strong>Servo motor</strong>
+                    Aims the nozzle.
+                </div>
+
+                <div class="component">
+                    <strong>Water tube</strong>
+                    Connects tank to nozzle.
+                </div>
+
+                <div class="component">
+                    <strong>Nozzle</strong>
+                    Directs water at the flame.
+                </div>
+
+                <div class="component">
+                    <strong>MOSFET or relay module</strong>
+                    Switches the pump.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>💧 System concept</h3>
+
+            <div class="diagram">
+
+                <svg viewBox="0 0 1000 420">
+
+                    <rect
+                        class="svg-water"
+                        x="80"
+                        y="100"
+                        width="190"
+                        height="170"
+                        rx="20"
+                    />
+
+                    <text class="svg-text" x="125" y="145">
+                        WATER TANK
+                    </text>
+
+                    <text class="svg-small" x="115" y="180">
+                        Water
+                    </text>
+
+
+                    <rect
+                        class="svg-box"
+                        x="400"
+                        y="120"
+                        width="170"
+                        height="120"
+                        rx="16"
+                    />
+
+                    <text class="svg-text" x="440" y="165">
+                        PUMP
+                    </text>
+
+                    <text class="svg-small" x="425" y="195">
+                        External power
+                    </text>
+
+
+                    <rect
+                        class="svg-box"
+                        x="690"
+                        y="100"
+                        width="180"
+                        height="170"
+                        rx="18"
+                    />
+
+                    <text class="svg-text" x="735" y="145">
+                        SERVO
+                    </text>
+
+                    <text class="svg-small" x="715" y="180">
+                        ↔ Nozzle
+                    </text>
+
+                    <text class="svg-small" x="715" y="210">
+                        Aim at fire
+                    </text>
+
+
+                    <path
+                        class="wire"
+                        d="M270 180 L400 180"
+                    />
+
+                    <path
+                        class="wire"
+                        d="M570 180 L690 180"
+                    />
+
+                </svg>
+
+            </div>
+
+        </div>
+
+
+        <div class="note danger">
+
+            <strong>⚠️ Pump warning:</strong>
+
+            Never connect a water pump directly to an Arduino GPIO pin.
+            Use an appropriate MOSFET/driver or relay and a suitable external
+            pump supply.
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- STAGE 4 -->
+    <!-- ===================================================== -->
+
+    <section class="stage" id="stage4">
+
+        <div class="card">
+
+            <h2>
+                <span class="stage-number">4</span>
+                Smoke Detection
+            </h2>
+
+            <p class="subtitle">
+                Keep everything from Stages 1–3 and add smoke detection.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>💨 Recommended beginner sensor</h3>
+
+            <div class="component">
+
+                <strong>MQ-2 smoke/gas sensor module</strong>
+
+                The MQ-2 can respond to smoke and several gases.
+                It should be treated as supporting information rather than
+                the only reason to activate the water pump.
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🔌 MQ-2 basic wiring</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>MQ-2</th>
+                        <th>Arduino</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>VCC</td>
+                        <td>5V</td>
+                    </tr>
+
+                    <tr>
+                        <td>GND</td>
+                        <td>Common GND</td>
+                    </tr>
+
+                    <tr>
+                        <td>AO</td>
+                        <td>A0</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+            <div class="note">
+
+                MQ-2 modules need warm-up and calibration.
+                The threshold should be determined experimentally.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- STAGE 5 -->
+    <!-- ===================================================== -->
+
+    <section class="stage" id="stage5">
+
+        <div class="card">
+
+            <h2>
+                <span class="stage-number">5</span>
+                Autonomous Navigation
+            </h2>
+
+            <p class="subtitle">
+                The final stage combines everything and adds obstacle avoidance.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>📡 Ultrasonic sensor</h3>
+
+            <div class="component">
+
+                <strong>HC-SR04</strong>
+
+                Used to detect obstacles in front of the robot.
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🔌 HC-SR04 basic wiring</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>HC-SR04</th>
+                        <th>Arduino</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>VCC</td>
+                        <td>5V</td>
+                    </tr>
+
+                    <tr>
+                        <td>GND</td>
+                        <td>Common GND</td>
+                    </tr>
+
+                    <tr>
+                        <td>TRIG</td>
+                        <td>Digital pin selected in final code</td>
+                    </tr>
+
+                    <tr>
+                        <td>ECHO</td>
+                        <td>Digital pin selected in final code</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🧠 Final robot mission</h3>
+
+            <div class="flow">
+
+                <div class="flow-item">
+                    🧭 Navigate
+                </div>
+
+                <div class="flow-item">
+                    🚧 Avoid obstacles
+                </div>
+
+                <div class="flow-item">
+                    💨 Detect smoke
+                </div>
+
+                <div class="flow-item">
+                    🔥 Detect flame
+                </div>
+
+                <div class="flow-item">
+                    🎯 Approach fire
+                </div>
+
+                <div class="flow-item">
+                    🛑 Stop
+                </div>
+
+                <div class="flow-item">
+                    💧 Spray
+                </div>
+
+                <div class="flow-item">
+                    ✅ Confirm extinguished
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- TEAM CHECKLIST -->
+    <!-- ===================================================== -->
+
+    <div class="card">
+
+        <h2>🏆 Team Build Checklist</h2>
+
+        <p class="subtitle">
+            Use this checklist during construction and testing.
+        </p>
+
+        <div class="checklist">
+
+            <label>
+                <input type="checkbox">
+                Stage 1: Four motors connected and tested.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 1: Forward movement works.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 1: Backward movement works.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 1: Left and right turning works.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 1: Common ground verified.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 2: Left flame sensor tested.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 2: Center flame sensor tested.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 2: Right flame sensor tested.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 2: LED indicator tested.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 2: Robot approaches flame correctly.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 3: Servo aims nozzle.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 3: Pump control tested safely.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 3: Water spray reaches target.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 4: Smoke sensor warmed up and calibrated.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 5: Ultrasonic obstacle detection works.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Stage 5: Complete autonomous mission tested.
+            </label>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>📌 Build rule</h3>
+
+        <div class="note success">
+
+            <strong>Each stage builds on the previous stage.</strong>
+
+            <br><br>
+
+            Stage 1 → Movement<br>
+            ↓<br>
+            Stage 2 → Movement + Fire Detection<br>
+            ↓<br>
+            Stage 3 → Movement + Fire + Water<br>
+            ↓<br>
+            Stage 4 → Movement + Fire + Water + Smoke<br>
+            ↓<br>
+            Stage 5 → Everything + Autonomous Navigation
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    🔥 Firefighter Robot Wiring Guide<br>
+    Arduino Uno + L298N<br>
+    Designed for offline team use.
+
+</footer>
+
+
+<script>
+
+function showStage(stageNumber) {
+
+    const stages =
+        document.querySelectorAll(".stage");
+
+    const tabs =
+        document.querySelectorAll(".tab");
+
+    stages.forEach(function(stage) {
+
+        stage.classList.remove("active");
+
+    });
+
+    tabs.forEach(function(tab) {
+
+        tab.classList.remove("active");
+
+    });
+
+    document
+        .getElementById("stage" + stageNumber)
+        .classList.add("active");
+
+    tabs[stageNumber - 1]
+        .classList.add("active");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+</script>
+
+</body>
+</html>
