@@ -1,854 +1,2762 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Offline wiring guide for an Arduino Uno firefighter robot using an L298N motor driver.">
-<title>Firefighter Robot — Wiring Guide</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Firefighter Robot — Eaii Project</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#101828;
+  --muted:#667085;
+  --line:#d9dee8;
+  --primary:#e53935;
+  --primary2:#ff7043;
+  --green:#16a34a;
+  --blue:#2563eb;
+  --yellow:#f59e0b;
+  --shadow:0 12px 35px rgba(16,24,40,.08);
+}
 
-    :root {
-        --bg: #f4f6f8;
-        --card: #ffffff;
-        --text: #17202a;
-        --muted: #667085;
-        --border: #dfe3e8;
-        --red: #e53935;
-        --red-dark: #b71c1c;
-        --blue: #2563eb;
-        --green: #16a34a;
-        --orange: #f59e0b;
-        --purple: #7c3aed;
-        --dark: #111827;
-    }
+.dark{
+  --bg:#080b12;
+  --card:#111722;
+  --text:#f5f7fa;
+  --muted:#9aa4b2;
+  --line:#263041;
+  --shadow:0 15px 45px rgba(0,0,0,.35);
+}
 
-    body {
-        margin: 0;
-        font-family:
-            Inter,
-            system-ui,
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        line-height: 1.6;
-    }
+*{
+  box-sizing:border-box;
+}
 
-    header {
-        background:
-            radial-gradient(circle at top right, #ef4444 0, transparent 35%),
-            linear-gradient(135deg, #111827, #1f2937);
-        color: white;
-        padding: 55px 20px;
-        text-align: center;
-    }
+html{
+  scroll-behavior:smooth;
+}
 
-    header .emoji {
-        font-size: 55px;
-    }
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.25s;
+}
 
-    header h1 {
-        margin: 8px 0;
-        font-size: clamp(30px, 7vw, 52px);
-        letter-spacing: -1px;
-    }
+button{
+  font:inherit;
+}
 
-    header p {
-        max-width: 760px;
-        margin: auto;
-        color: #d1d5db;
-        font-size: 17px;
-    }
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  backdrop-filter:blur(18px);
+  background:color-mix(in srgb,var(--bg) 85%,transparent);
+  border-bottom:1px solid var(--line);
+}
 
-    .container {
-        width: min(1100px, calc(100% - 28px));
-        margin: auto;
-    }
+.nav{
+  max-width:1250px;
+  margin:auto;
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+}
 
-    .warning {
-        margin-top: 20px;
-        padding: 17px;
-        background: #fff7ed;
-        border: 1px solid #fed7aa;
-        border-left: 5px solid var(--orange);
-        border-radius: 14px;
-    }
+.logo{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-weight:900;
+  font-size:19px;
+}
 
-    .tabs {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        padding: 14px 0;
-        background: rgba(244, 246, 248, 0.96);
-        backdrop-filter: blur(10px);
-    }
+.logoIcon{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:linear-gradient(135deg,#ff3d00,#ff9800);
+  color:white;
+  box-shadow:0 8px 22px rgba(255,61,0,.3);
+}
 
-    .tab {
-        border: 1px solid var(--border);
-        background: white;
-        color: var(--text);
-        padding: 11px 16px;
-        border-radius: 999px;
-        cursor: pointer;
-        white-space: nowrap;
-        font-weight: 700;
-    }
+.navActions{
+  display:flex;
+  gap:8px;
+}
 
-    .tab:hover {
-        border-color: var(--red);
-    }
+.iconBtn{
+  width:42px;
+  height:42px;
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--text);
+  border-radius:12px;
+  cursor:pointer;
+}
 
-    .tab.active {
-        background: var(--red);
-        border-color: var(--red);
-        color: white;
-    }
+.hero{
+  max-width:1250px;
+  margin:auto;
+  padding:65px 22px 35px;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:35px;
+  align-items:center;
+}
 
-    .stage {
-        display: none;
-        animation: fade .2s ease;
-    }
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(229,57,53,.1);
+  color:var(--primary);
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:800;
+}
 
-    .stage.active {
-        display: block;
-    }
+h1{
+  font-size:clamp(40px,6vw,74px);
+  line-height:.98;
+  letter-spacing:-3px;
+  margin:20px 0;
+}
 
-    @keyframes fade {
-        from {
-            opacity: .3;
-            transform: translateY(5px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+.gradient{
+  background:linear-gradient(90deg,#e53935,#ff9800);
+  -webkit-background-clip:text;
+  color:transparent;
+}
 
-    .card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        padding: 22px;
-        margin: 15px 0;
-        box-shadow: 0 5px 20px rgba(16, 24, 40, .05);
-    }
+.hero p{
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.7;
+  max-width:650px;
+}
 
-    h2 {
-        margin: 0 0 4px;
-        font-size: 28px;
-    }
+.heroButtons{
+  display:flex;
+  gap:12px;
+  margin-top:25px;
+  flex-wrap:wrap;
+}
 
-    h3 {
-        margin-top: 0;
-    }
+.btn{
+  border:0;
+  padding:13px 18px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:800;
+}
 
-    .subtitle {
-        color: var(--muted);
-        margin-top: 0;
-    }
+.primary{
+  background:linear-gradient(135deg,#e53935,#ff7043);
+  color:white;
+}
 
-    .grid {
-        display: grid;
-        grid-template-columns:
-            repeat(auto-fit, minmax(220px, 1fr));
-        gap: 12px;
-    }
+.secondary{
+  background:var(--card);
+  border:1px solid var(--line);
+  color:var(--text);
+}
 
-    .component {
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 15px;
-        background: #fcfcfd;
-    }
+.progress{
+  max-width:1250px;
+  margin:10px auto 50px;
+  padding:0 22px;
+}
 
-    .component strong {
-        display: block;
-        margin-bottom: 5px;
-    }
+.progressBox{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:20px;
+  box-shadow:var(--shadow);
+}
 
-    .tag {
-        display: inline-block;
-        padding: 3px 8px;
-        margin: 3px 3px 0 0;
-        border-radius: 999px;
-        background: #eef2ff;
-        color: #3730a3;
-        font-size: 12px;
-        font-weight: 800;
-    }
+.progressTop{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:14px;
+}
 
-    .diagram {
-        overflow-x: auto;
-        border: 1px solid var(--border);
-        background: #fbfcfe;
-        border-radius: 14px;
-        padding: 12px;
-    }
+.progressBar{
+  height:10px;
+  background:var(--line);
+  border-radius:20px;
+  overflow:hidden;
+}
 
-    svg {
-        width: 100%;
-        min-width: 800px;
-        height: auto;
-    }
+.progressFill{
+  height:100%;
+  width:20%;
+  background:linear-gradient(90deg,#e53935,#ff9800);
+  transition:.4s;
+}
 
-    .svg-box {
-        fill: white;
-        stroke: #475467;
-        stroke-width: 2;
-    }
+.stageNav{
+  max-width:1250px;
+  margin:auto;
+  padding:0 22px 35px;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+}
 
-    .svg-board {
-        fill: #eff6ff;
-        stroke: #2563eb;
-        stroke-width: 2;
-    }
+.stageTab{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:15px;
+  cursor:pointer;
+  color:var(--text);
+  text-align:left;
+  transition:.2s;
+}
 
-    .svg-sensor {
-        fill: #fff7ed;
-        stroke: #f59e0b;
-        stroke-width: 2;
-    }
+.stageTab:hover{
+  transform:translateY(-2px);
+}
 
-    .svg-motor {
-        fill: #f0fdf4;
-        stroke: #16a34a;
-        stroke-width: 2;
-    }
+.stageTab.active{
+  border-color:var(--primary);
+  box-shadow:0 0 0 2px rgba(229,57,53,.1);
+}
 
-    .svg-water {
-        fill: #eff6ff;
-        stroke: #0284c7;
-        stroke-width: 2;
-    }
+.stageNum{
+  color:var(--primary);
+  font-weight:900;
+  font-size:13px;
+}
 
-    .svg-text {
-        font-size: 14px;
-        font-weight: 700;
-        fill: #17202a;
-    }
+.stageTab strong{
+  display:block;
+  margin-top:5px;
+}
 
-    .svg-small {
-        font-size: 12px;
-        fill: #475467;
-    }
+main{
+  max-width:1250px;
+  margin:auto;
+  padding:0 22px 80px;
+}
 
-    .wire {
-        fill: none;
-        stroke-width: 3;
-    }
+.stage{
+  display:none;
+}
 
-    .wire-signal {
-        stroke: #2563eb;
-    }
+.stage.active{
+  display:block;
+}
 
-    .wire-power {
-        stroke: #dc2626;
-    }
+.stageHeader{
+  margin-bottom:25px;
+}
 
-    .wire-ground {
-        stroke: #111827;
-    }
+.stageHeader h2{
+  font-size:36px;
+  margin:0 0 8px;
+}
 
-    .wire-sensor {
-        stroke: #f59e0b;
-    }
+.stageHeader p{
+  color:var(--muted);
+}
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
+.lastProgress{
+  background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(22,163,74,.08));
+  border:1px solid rgba(37,99,235,.2);
+  border-radius:18px;
+  padding:17px;
+  margin:20px 0;
+}
 
-    th,
-    td {
-        border-bottom: 1px solid var(--border);
-        padding: 11px;
-        text-align: left;
-        vertical-align: top;
-    }
+.lastProgress strong{
+  color:var(--blue);
+}
 
-    th {
-        background: #f8fafc;
-        font-weight: 800;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
 
-    tr:last-child td {
-        border-bottom: none;
-    }
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:var(--shadow);
+}
 
-    code {
-        background: #eef2f6;
-        padding: 2px 6px;
-        border-radius: 5px;
-        font-family: monospace;
-    }
+.card h3{
+  margin-top:0;
+}
 
-    .note {
-        border-left: 5px solid var(--blue);
-        background: #eff6ff;
-        padding: 13px 15px;
-        border-radius: 9px;
-        margin-top: 14px;
-    }
+.full{
+  grid-column:1/-1;
+}
 
-    .success {
-        border-left-color: var(--green);
-        background: #f0fdf4;
-    }
+.parts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
 
-    .danger {
-        border-left-color: var(--red);
-        background: #fff1f2;
-    }
+.part{
+  border:1px solid var(--line);
+  background:var(--bg);
+  border-radius:999px;
+  padding:8px 11px;
+  font-size:13px;
+  font-weight:700;
+}
 
-    .stage-number {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 38px;
-        height: 38px;
-        background: var(--red);
-        color: white;
-        border-radius: 50%;
-        font-weight: 900;
-        margin-right: 8px;
-    }
+.wiring{
+  width:100%;
+  overflow:auto;
+}
 
-    .checklist label {
-        display: flex;
-        gap: 10px;
-        padding: 9px 0;
-        border-bottom: 1px solid var(--border);
-    }
+.wiring svg{
+  width:100%;
+  min-width:650px;
+  height:auto;
+}
 
-    .checklist label:last-child {
-        border-bottom: none;
-    }
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:15px;
+  color:var(--muted);
+  font-size:13px;
+}
 
-    .checklist input {
-        width: 18px;
-        height: 18px;
-        margin-top: 4px;
-    }
+.legend span{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
 
-    .flow {
-        display: grid;
-        grid-template-columns:
-            repeat(auto-fit, minmax(150px, 1fr));
-        gap: 10px;
-        text-align: center;
-    }
+.dot{
+  width:12px;
+  height:4px;
+  border-radius:10px;
+  display:inline-block;
+}
 
-    .flow-item {
-        border: 1px solid var(--border);
-        border-radius: 13px;
-        padding: 15px;
-        background: #fff;
-        font-weight: 700;
-    }
+.red{background:#ef4444}
+.black{background:#111}
+.blue{background:#2563eb}
+.green{background:#16a34a}
+.yellow{background:#eab308}
 
-    .flow-arrow {
-        color: var(--red);
-        font-size: 25px;
-    }
+.connectionTable{
+  width:100%;
+  border-collapse:collapse;
+}
 
-    footer {
-        text-align: center;
-        color: var(--muted);
-        padding: 35px 15px;
-    }
+.connectionTable th,
+.connectionTable td{
+  border-bottom:1px solid var(--line);
+  padding:11px 8px;
+  text-align:left;
+  font-size:14px;
+}
 
-    @media (max-width: 650px) {
-        .card {
-            padding: 16px;
-        }
+.connectionTable th{
+  color:var(--muted);
+}
 
-        th,
-        td {
-            font-size: 13px;
-        }
+.code{
+  background:#0b1020;
+  color:#e8eef9;
+  border-radius:15px;
+  padding:18px;
+  overflow:auto;
+  font-family:"Cascadia Code",Consolas,monospace;
+  font-size:13px;
+  line-height:1.55;
+  max-height:550px;
+}
 
-        header {
-            padding: 40px 15px;
-        }
-    }
+.copy{
+  float:right;
+  background:#202938;
+  color:white;
+  border:0;
+  border-radius:8px;
+  padding:7px 10px;
+  cursor:pointer;
+}
+
+.robotArea{
+  min-height:430px;
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 50% 40%,rgba(255,255,255,.08),transparent 40%),
+    linear-gradient(135deg,#101722,#070a10);
+  position:relative;
+  overflow:hidden;
+  perspective:900px;
+  cursor:grab;
+}
+
+.robotArea:active{
+  cursor:grabbing;
+}
+
+.robotScene{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  transform-style:preserve-3d;
+}
+
+.robot{
+  width:330px;
+  height:190px;
+  position:relative;
+  transform-style:preserve-3d;
+  transform:rotateX(57deg) rotateZ(-25deg);
+  transition:transform .1s linear;
+}
+
+.plate{
+  position:absolute;
+  left:0;
+  width:330px;
+  height:190px;
+  background:linear-gradient(145deg,#242b36,#11161d);
+  border:3px solid #3e4857;
+  border-radius:18px;
+  transform-style:preserve-3d;
+}
+
+.bottomPlate{
+  top:38px;
+  transform:translateZ(-18px);
+}
+
+.topPlate{
+  top:0;
+  transform:translateZ(35px);
+}
+
+.hole{
+  position:absolute;
+  width:8px;
+  height:8px;
+  background:#05070a;
+  border:2px solid #586270;
+  border-radius:50%;
+}
+
+.h1{left:22px;top:20px}
+.h2{right:22px;top:20px}
+.h3{left:22px;bottom:20px}
+.h4{right:22px;bottom:20px}
+
+.wheel{
+  position:absolute;
+  width:58px;
+  height:86px;
+  background:repeating-linear-gradient(
+    90deg,#080a0d 0,#080a0d 7px,#272d35 8px,#080a0d 12px
+  );
+  border:4px solid #444d5b;
+  border-radius:17px;
+  transform-style:preserve-3d;
+}
+
+.wheel:after{
+  content:"";
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:#111;
+  border:3px solid #777;
+  border-radius:50%;
+  left:15px;
+  top:29px;
+}
+
+.w1{
+  left:-35px;
+  top:17px;
+  transform:translateZ(0) rotateY(90deg);
+}
+
+.w2{
+  right:-35px;
+  top:17px;
+  transform:rotateY(90deg);
+}
+
+.w3{
+  left:-35px;
+  bottom:17px;
+  transform:rotateY(90deg);
+}
+
+.w4{
+  right:-35px;
+  bottom:17px;
+  transform:rotateY(90deg);
+}
+
+.arduino{
+  position:absolute;
+  width:105px;
+  height:52px;
+  background:#1c9b70;
+  border:3px solid #70d2af;
+  border-radius:7px;
+  left:110px;
+  top:65px;
+  transform:translateZ(65px);
+}
+
+.battery{
+  position:absolute;
+  width:70px;
+  height:45px;
+  background:#242a33;
+  border:3px solid #737d8c;
+  border-radius:7px;
+  right:20px;
+  top:70px;
+  transform:translateZ(60px);
+}
+
+.bottle{
+  position:absolute;
+  width:50px;
+  height:80px;
+  background:linear-gradient(90deg,#1f7cae,#57b8e5,#1f7cae);
+  border:3px solid #8dd8ff;
+  border-radius:12px 12px 15px 15px;
+  left:140px;
+  top:50px;
+  transform:translateZ(85px);
+}
+
+.bottle:before{
+  content:"";
+  position:absolute;
+  width:24px;
+  height:13px;
+  background:#222;
+  left:10px;
+  top:-14px;
+  border-radius:4px;
+}
+
+.servo{
+  position:absolute;
+  width:48px;
+  height:35px;
+  background:#252b35;
+  border:2px solid #737d8c;
+  left:140px;
+  top:-25px;
+  transform:translateZ(55px);
+}
+
+.nozzle{
+  position:absolute;
+  width:110px;
+  height:13px;
+  background:#e6e6e6;
+  left:170px;
+  top:-28px;
+  border-radius:10px;
+  transform:translateZ(65px) rotateZ(-8deg);
+}
+
+.sensor{
+  position:absolute;
+  width:18px;
+  height:18px;
+  background:#ff3d00;
+  border:3px solid #ff9e80;
+  border-radius:50%;
+  transform:translateZ(70px);
+}
+
+.s1{left:70px;top:-15px}
+.s2{left:155px;top:-15px}
+.s3{right:70px;top:-15px}
+
+.ultra{
+  position:absolute;
+  left:137px;
+  top:-48px;
+  width:56px;
+  height:25px;
+  background:#263241;
+  border:3px solid #7b8798;
+  border-radius:6px;
+  transform:translateZ(70px);
+}
+
+.ultra:before,
+.ultra:after{
+  content:"";
+  position:absolute;
+  width:15px;
+  height:15px;
+  background:#111;
+  border:2px solid #aaa;
+  border-radius:50%;
+  top:2px;
+}
+
+.ultra:before{left:5px}
+.ultra:after{right:5px}
+
+.led{
+  position:absolute;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#ff2d2d;
+  box-shadow:0 0 15px #ff2d2d;
+  left:160px;
+  top:-5px;
+  transform:translateZ(78px);
+}
+
+.controls{
+  position:absolute;
+  bottom:15px;
+  left:15px;
+  right:15px;
+  display:flex;
+  justify-content:space-between;
+  color:#cbd5e1;
+  font-size:12px;
+}
+
+.tip{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:12px;
+}
+
+.checklist{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+.checklist li{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.check{
+  width:22px;
+  height:22px;
+  border:2px solid var(--line);
+  border-radius:6px;
+  flex:none;
+  cursor:pointer;
+}
+
+.check.done{
+  background:var(--green);
+  border-color:var(--green);
+}
+
+.check.done:after{
+  content:"✓";
+  color:white;
+  display:grid;
+  place-items:center;
+  height:100%;
+  font-weight:900;
+}
+
+.warning{
+  border-left:4px solid var(--yellow);
+  background:rgba(245,158,11,.08);
+  padding:14px;
+  border-radius:10px;
+  margin-top:15px;
+}
+
+footer{
+  border-top:1px solid var(--line);
+  padding:30px 22px;
+  color:var(--muted);
+  text-align:center;
+}
+
+@media(max-width:900px){
+  .hero,
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .stageNav{
+    grid-template-columns:1fr 1fr;
+  }
+
+  h1{
+    letter-spacing:-2px;
+  }
+}
+
+@media(max-width:550px){
+  .stageNav{
+    grid-template-columns:1fr;
+  }
+
+  .hero{
+    padding-top:35px;
+  }
+
+  .card{
+    padding:16px;
+  }
+}
 </style>
 </head>
 
 <body>
 
 <header>
-    <div class="emoji">🔥🤖</div>
-    <h1>Firefighter Robot</h1>
-    <p>
-        Complete offline wiring and build guide for an Arduino Uno robot
-        using an L298N motor driver.
-    </p>
-</header>
-
-<main class="container">
-
-    <div class="warning">
-        <strong>⚠️ IMPORTANT BEFORE BUILDING</strong><br>
-        This guide is designed for your team's planned robot.
-        Check the labels on the actual L298N board before connecting power.
-        L298N boards vary slightly. Never connect the motor battery directly
-        to the Arduino 5V pin.
+  <div class="nav">
+    <div class="logo">
+      <div class="logoIcon">🔥</div>
+      <span>EAII Firefighter Robot</span>
     </div>
 
-    <!-- TABS -->
+    <div class="navActions">
+      <button class="iconBtn" id="themeBtn" title="Toggle theme">🌙</button>
+    </div>
+  </div>
+</header>
 
-    <nav class="tabs">
-        <button class="tab active" onclick="showStage(1)">
-            Stage 1 · Movement
-        </button>
+<section class="hero">
 
-        <button class="tab" onclick="showStage(2)">
-            Stage 2 · Fire
-        </button>
+  <div>
+    <span class="badge">🤖 Eaii Robotics Project</span>
 
-        <button class="tab" onclick="showStage(3)">
-            Stage 3 · Water
-        </button>
+    <h1>
+      Firefighter<br>
+      <span class="gradient">Robot Guide</span>
+    </h1>
 
-        <button class="tab" onclick="showStage(4)">
-            Stage 4 · Smoke
-        </button>
+    <p>
+      Complete build guide for our 4WD Arduino UNO firefighter robot.
+      Every stage continues from the previous stage, with wiring,
+      components, progress and Arduino C++.
+    </p>
 
-        <button class="tab" onclick="showStage(5)">
-            Stage 5 · Navigation
-        </button>
-    </nav>
+    <div class="heroButtons">
+      <button class="btn primary" onclick="scrollToStages()">
+        Start Building
+      </button>
 
+      <button class="btn secondary" onclick="setStage(1)">
+        Stage 1
+      </button>
+    </div>
+  </div>
 
-    <!-- ===================================================== -->
-    <!-- STAGE 1 -->
-    <!-- ===================================================== -->
+  <div class="card">
+    <h3>🤖 Current Robot</h3>
 
-    <section class="stage active" id="stage1">
+    <div class="robotArea" id="robotArea">
 
-        <div class="card">
-            <h2>
-                <span class="stage-number">1</span>
-                Movement
-            </h2>
+      <div class="robotScene">
+        <div class="robot" id="robot">
 
-            <p class="subtitle">
-                Build the basic 4-wheel robot and make it move.
-            </p>
-        </div>
+          <div class="plate bottomPlate">
+            <div class="hole h1"></div>
+            <div class="hole h2"></div>
+            <div class="hole h3"></div>
+            <div class="hole h4"></div>
+          </div>
 
-        <div class="card">
+          <div class="plate topPlate">
+            <div class="hole h1"></div>
+            <div class="hole h2"></div>
+            <div class="hole h3"></div>
+            <div class="hole h4"></div>
+          </div>
 
-            <h3>🧰 Components required</h3>
+          <div class="wheel w1"></div>
+          <div class="wheel w2"></div>
+          <div class="wheel w3"></div>
+          <div class="wheel w4"></div>
 
-            <div class="grid">
+          <div class="arduino"></div>
+          <div class="battery"></div>
 
-                <div class="component">
-                    <strong>🧠 Arduino Uno</strong>
-                    Main controller.
-                </div>
+          <div class="bottle"></div>
+          <div class="servo"></div>
+          <div class="nozzle"></div>
 
-                <div class="component">
-                    <strong>⚙️ L298N</strong>
-                    Motor driver.
-                </div>
+          <div class="sensor s1"></div>
+          <div class="sensor s2"></div>
+          <div class="sensor s3"></div>
 
-                <div class="component">
-                    <strong>🛞 4 × identical motors</strong>
-                    Two motors on each side.
-                </div>
-
-                <div class="component">
-                    <strong>🔋 Battery</strong>
-                    Motor power.
-                </div>
-
-                <div class="component">
-                    <strong>🟩 Breadboard</strong>
-                    Common-ground/control distribution.
-                </div>
-
-                <div class="component">
-                    <strong>🔌 Jumper wires</strong>
-
-                    <span class="tag">Male-Male</span>
-                    <span class="tag">Male-Female if required</span>
-                </div>
-
-            </div>
+          <div class="ultra"></div>
+          <div class="led"></div>
 
         </div>
+      </div>
+
+      <div class="controls">
+        <span>🖱️ Drag = rotate</span>
+        <span>↕ Scroll = zoom</span>
+      </div>
 
+    </div>
 
-        <div class="card">
+    <p class="tip">
+      The 3D model is simplified for planning. Use the real hardware
+      measurements when physically mounting components.
+    </p>
+  </div>
+
+</section>
 
-            <h3>📐 Stage 1 wiring diagram</h3>
+<section class="progress">
+
+  <div class="progressBox">
+
+    <div class="progressTop">
+      <strong>Project Progress</strong>
+      <span id="progressText">Stage 1 / 5</span>
+    </div>
+
+    <div class="progressBar">
+      <div class="progressFill" id="progressFill"></div>
+    </div>
+
+  </div>
+
+</section>
+
+<nav class="stageNav">
+
+  <button class="stageTab active" onclick="setStage(1)">
+    <span class="stageNum">STAGE 01</span>
+    <strong>Movement Test</strong>
+  </button>
 
-            <div class="diagram">
+  <button class="stageTab" onclick="setStage(2)">
+    <span class="stageNum">STAGE 02</span>
+    <strong>Approach Fire</strong>
+  </button>
+
+  <button class="stageTab" onclick="setStage(3)">
+    <span class="stageNum">STAGE 03</span>
+    <strong>Water System</strong>
+  </button>
+
+  <button class="stageTab" onclick="setStage(4)">
+    <span class="stageNum">STAGE 04</span>
+    <strong>Navigation</strong>
+  </button>
+
+  <button class="stageTab" onclick="setStage(5)">
+    <span class="stageNum">STAGE 05</span>
+    <strong>Long Range Fire</strong>
+  </button>
+
+</nav>
+
+<main>
+
+<!-- ====================================================== -->
+<!-- STAGE 1 -->
+<!-- ====================================================== -->
+
+<section class="stage active" id="stage1">
+
+  <div class="stageHeader">
+    <span class="badge">STAGE 01</span>
+    <h2>Movement Test</h2>
+    <p>
+      Prove that all four motors can move the 4WD robot forward and backward.
+    </p>
+  </div>
+
+  <div class="lastProgress">
+    <strong>Latest project progress</strong><br>
+    This is the starting stage. The chassis, motors, wheels, Arduino UNO,
+    L298N and wiring are being prepared.
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>Required Components</h3>
+
+      <div class="parts">
+        <span class="part">Arduino UNO</span>
+        <span class="part">L298N</span>
+        <span class="part">4 DC Motors</span>
+        <span class="part">4 Wheels</span>
+        <span class="part">4WD Chassis</span>
+        <span class="part">Breadboard</span>
+        <span class="part">Jumper Wires</span>
+        <span class="part">14V Battery</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Stage Goal</h3>
+
+      <ul class="checklist">
+        <li>
+          <span class="check" onclick="toggleCheck(this)"></span>
+          Motors connected to L298N
+        </li>
+
+        <li>
+          <span class="check" onclick="toggleCheck(this)"></span>
+          L298N connected to Arduino
+        </li>
+
+        <li>
+          <span class="check" onclick="toggleCheck(this)"></span>
+          Common GND connected
+        </li>
+
+        <li>
+          <span class="check" onclick="toggleCheck(this)"></span>
+          Robot moves forward
+        </li>
+
+        <li>
+          <span class="check" onclick="toggleCheck(this)"></span>
+          Robot moves backward
+        </li>
+      </ul>
+    </div>
+
+    <div class="card full">
+      <h3>🔌 Stage 1 Wiring Diagram</h3>
+
+      <div class="wiring">
+
+        <svg viewBox="0 0 1000 500">
+
+          <rect x="60" y="170" width="250" height="150"
+                rx="20" fill="#1c9b70"/>
+
+          <text x="185" y="215"
+                text-anchor="middle"
+                fill="white"
+                font-size="26"
+                font-weight="bold">
+            Arduino UNO
+          </text>
+
+          <text x="185" y="255"
+                text-anchor="middle"
+                fill="white"
+                font-size="17">
+            D5 D6 D7 D8
+          </text>
+
+          <text x="185" y="285"
+                text-anchor="middle"
+                fill="white"
+                font-size="17">
+            D9 D10
+          </text>
+
+          <rect x="650" y="130" width="250" height="230"
+                rx="20" fill="#263241"
+                stroke="#64748b"
+                stroke-width="3"/>
+
+          <text x="775" y="175"
+                text-anchor="middle"
+                fill="white"
+                font-size="27"
+                font-weight="bold">
+            L298N
+          </text>
+
+          <text x="775" y="215"
+                text-anchor="middle"
+                fill="#cbd5e1"
+                font-size="16">
+            OUT1 OUT2
+          </text>
+
+          <text x="775" y="250"
+                text-anchor="middle"
+                fill="#cbd5e1"
+                font-size="16">
+            OUT3 OUT4
+          </text>
+
+          <text x="775" y="300"
+                text-anchor="middle"
+                fill="#cbd5e1"
+                font-size="16">
+            +12V / GND
+          </text>
+
+          <rect x="350" y="30" width="200" height="80"
+                rx="15" fill="#242a33"/>
+
+          <text x="450" y="75"
+                text-anchor="middle"
+                fill="white"
+                font-size="20"
+                font-weight="bold">
+            14V BATTERY
+          </text>
+
+          <line x1="310" y1="205"
+                x2="650" y2="205"
+                stroke="#ef4444"
+                stroke-width="5"/>
+
+          <line x1="310" y1="240"
+                x2="650" y2="240"
+                stroke="#2563eb"
+                stroke-width="5"/>
+
+          <line x1="550" y1="70"
+                x2="650" y2="300"
+                stroke="#ef4444"
+                stroke-width="5"/>
+
+          <line x1="550" y1="90"
+                x2="650" y2="325"
+                stroke="#111"
+                stroke-width="5"/>
+
+          <rect x="90" y="380" width="180" height="70"
+                rx="12" fill="#161b22"/>
+
+          <text x="180" y="422"
+                text-anchor="middle"
+                fill="white"
+                font-size="18">
+            4 MOTORS
+          </text>
+
+          <line x1="900" y1="200"
+                x2="960" y2="200"
+                stroke="#ef4444"
+                stroke-width="5"/>
+
+          <line x1="900" y1="230"
+                x2="960" y2="230"
+                stroke="#2563eb"
+                stroke-width="5"/>
+
+          <text x="965" y="190"
+                fill="var(--text)"
+                font-size="15">
+            Motor pair A
+          </text>
+
+          <text x="965" y="270"
+                fill="var(--text)"
+                font-size="15">
+            Motor pair B
+          </text>
+
+          <line x1="900" y1="260"
+                x2="960" y2="260"
+                stroke="#ef4444"
+                stroke-width="5"/>
+
+          <line x1="900" y1="290"
+                x2="960" y2="290"
+                stroke="#2563eb"
+                stroke-width="5"/>
+
+          <text x="430" y="190"
+                fill="var(--text)"
+                font-size="15">
+            Arduino control wires
+          </text>
+
+          <text x="570" y="390"
+                fill="var(--text)"
+                font-size="17"
+                font-weight="bold">
+            COMMON GND
+          </text>
+
+        </svg>
+
+      </div>
+
+      <div class="legend">
+        <span><i class="dot red"></i> Motor/battery positive</span>
+        <span><i class="dot blue"></i> Motor control</span>
+        <span><i class="dot black"></i> Ground</span>
+      </div>
+    </div>
+
+    <div class="card full">
+      <h3>Connection Table</h3>
+
+      <table class="connectionTable">
+
+        <tr>
+          <th>Arduino</th>
+          <th>L298N</th>
+          <th>Wire</th>
+        </tr>
+
+        <tr>
+          <td>D5</td>
+          <td>ENA</td>
+          <td>Female → Male</td>
+        </tr>
+
+        <tr>
+          <td>D7</td>
+          <td>IN1</td>
+          <td>Female → Male</td>
+        </tr>
+
+        <tr>
+          <td>D8</td>
+          <td>IN2</td>
+          <td>Female → Male</td>
+        </tr>
+
+        <tr>
+          <td>D9</td>
+          <td>IN3</td>
+          <td>Female → Male</td>
+        </tr>
+
+        <tr>
+          <td>D10</td>
+          <td>IN4</td>
+          <td>Female → Male</td>
+        </tr>
+
+        <tr>
+          <td>GND</td>
+          <td>GND</td>
+          <td>Female → Male</td>
+        </tr>
+
+        <tr>
+          <td>L298N OUT1/OUT2</td>
+          <td>Motor pair A</td>
+          <td>Motor wires</td>
+        </tr>
+
+        <tr>
+          <td>L298N OUT3/OUT4</td>
+          <td>Motor pair B</td>
+          <td>Motor wires</td>
+        </tr>
+
+      </table>
+
+      <div class="warning">
+        ⚠️ Do not assume the 14V battery should be connected directly to the
+        Arduino 5V pin. The L298N motor supply and Arduino supply must be wired
+        according to your actual L298N board and power arrangement.
+      </div>
+
+    </div>
+
+    <div class="card full">
+
+      <h3>💻 Stage 1 Arduino C++</h3>
+
+      <button class="copy" onclick="copyCode('code1')">Copy</button>
+
+      <pre class="code" id="code1"><code>/*
+  Eaii Firefighter Robot
+  STAGE 1 — Motor Movement Test
+
+  Goal:
+  Forward -> stop -> backward -> stop
+
+  4WD:
+  Motor A = left side
+  Motor B = right side
+*/
+
+const int ENA = 5;
+
+const int IN1 = 7;
+const int IN2 = 8;
+
+const int IN3 = 9;
+const int IN4 = 10;
+
+void stopRobot() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+}
+
+void forward() {
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+}
+
+void backward() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+}
+
+void setup() {
+
+  pinMode(ENA, OUTPUT);
+
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+  analogWrite(ENA, 180);
+
+  stopRobot();
+}
+
+void loop() {
+
+  forward();
+  delay(3000);
+
+  stopRobot();
+  delay(1500);
+
+  backward();
+  delay(3000);
+
+  stopRobot();
+  delay(3000);
+}</code></pre>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ====================================================== -->
+<!-- STAGE 2 -->
+<!-- ====================================================== -->
+
+<section class="stage" id="stage2">
+
+  <div class="stageHeader">
+    <span class="badge">STAGE 02</span>
+    <h2>Approach the Fire</h2>
+    <p>
+      Detect the flame, drive toward it, stop approximately 10 cm away,
+      then turn on the LED.
+    </p>
+  </div>
+
+  <div class="lastProgress">
+    <strong>Previous progress — Stage 1</strong><br>
+    The 4WD motor system has already been tested. Stage 2 keeps the
+    motor wiring and adds the three flame sensors and ultrasonic distance sensor.
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>New Components</h3>
+
+      <div class="parts">
+        <span class="part">3 × Flame Sensors</span>
+        <span class="part">Ultrasonic Sensor</span>
+        <span class="part">LED</span>
+        <span class="part">220Ω Resistor</span>
+        <span class="part">Jumper Wires</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Sensor Position</h3>
+
+      <p>
+        🔥 Flame sensors → front<br>
+        📡 Ultrasonic → front center<br>
+        💡 LED → visible top/front
+      </p>
+
+      <p class="tip">
+        Put the three flame sensors left / center / right so the robot can
+        determine where the fire is.
+      </p>
+    </div>
+
+    <div class="card full">
+
+      <h3>🔌 Stage 2 Wiring</h3>
+
+      <div class="wiring">
+
+        <svg viewBox="0 0 1000 600">
+
+          <rect x="40" y="200" width="220" height="150"
+                rx="18" fill="#1c9b70"/>
+
+          <text x="150" y="245"
+                text-anchor="middle"
+                fill="white"
+                font-size="25"
+                font-weight="bold">
+                ARDUINO UNO
+          </text>
+
+          <text x="150" y="280"
+                text-anchor="middle"
+                fill="white"
+                font-size="15">
+                A0 A1 A2
+          </text>
+
+          <text x="150" y="310"
+                text-anchor="middle"
+                fill="white"
+                font-size="15">
+                TRIG / ECHO
+          </text>
+
+          <rect x="650" y="80" width="260" height="160"
+                rx="18" fill="#ff5722"/>
+
+          <text x="780" y="120"
+                text-anchor="middle"
+                fill="white"
+                font-size="20"
+                font-weight="bold">
+                FLAME LEFT
+          </text>
+
+          <text x="780" y="155"
+                text-anchor="middle"
+                fill="white"
+                font-size="15">
+                VCC → 5V
+          </text>
+
+          <text x="780" y="180"
+                text-anchor="middle"
+                fill="white"
+                font-size="15">
+                GND → GND
+          </text>
+
+          <text x="780" y="205"
+                text-anchor="middle"
+                fill="white"
+                font-size="15">
+                AO → A0
+          </text>
+
+          <rect x="650" y="270" width="260" height="160"
+                rx="18" fill="#ff5722"/>
+
+          <text x="780" y="310"
+                text-anchor="middle"
+                fill="white"
+                font-size="20"
+                font-weight="bold">
+                FLAME CENTER
+          </text>
+
+          <text x="780" y="345"
+                text-anchor="middle"
+                fill="white"
+                font-size="15">
+                VCC → 5V
+          </text>
+
+          <text x="780" y="370"
+                text-anchor="middle"
+                fill="white"
+                font-size="15">
+                GND → GND
+          </text>
+
+          <text x="780" y="395"
+                text-anchor="middle"
+                fill="white"
+                font-size="15">
+                AO → A1
+          </text>
+
+          <rect x="350" y="430" width="260" height="130"
+                rx="18" fill="#ff5722"/>
+
+          <text x="480" y="465"
+                text-anchor="middle"
+                fill="white"
+                font-size="20"
+                font-weight="bold">
+                FLAME RIGHT
+          </text>
+
+          <text x="480" y="495"
+                text-anchor="middle"
+                fill="white"
+                font-size="15">
+                VCC→5V  GND→GND
+          </text>
+
+          <text x="480" y="525"
+                text-anchor="middle"
+                fill="white"
+                font-size="15">
+                AO → A2
+          </text>
+
+          <rect x="350" y="50" width="220" height="110"
+                rx="18" fill="#2563eb"/>
+
+          <text x="460" y="88"
+                text-anchor="middle"
+                fill="white"
+                font-size="20"
+                font-weight="bold">
+                HC-SR04
+          </text>
+
+          <text x="460" y="120"
+                text-anchor="middle"
+                fill="white"
+                font-size="14">
+                TRIG → D11
+          </text>
+
+          <text x="460" y="142"
+                text-anchor="middle"
+                fill="white"
+                font-size="14">
+                ECHO → D12
+          </text>
+
+          <line x1="260" y1="240"
+                x2="650" y2="205"
+                stroke="#16a34a"
+                stroke-width="4"/>
+
+          <line x1="260" y1="260"
+                x2="650" y2="345"
+                stroke="#16a34a"
+                stroke-width="4"/>
+
+          <line x1="260" y1="280"
+                x2="350" y2="500"
+                stroke="#16a34a"
+                stroke-width="4"/>
+
+          <line x1="260" y1="220"
+                x2="350" y2="105"
+                stroke="#2563eb"
+                stroke-width="4"/>
+
+          <text x="280" y="185"
+                fill="var(--text)"
+                font-size="15">
+            Sensor signal wires
+          </text>
+
+        </svg>
+
+      </div>
+
+    </div>
+
+    <div class="card full">
+
+      <h3>💻 Stage 2 Arduino C++</h3>
+
+      <button class="copy" onclick="copyCode('code2')">Copy</button>
+
+      <pre class="code" id="code2"><code>/*
+  STAGE 2
+  Find flame -> move toward it -> stop at ~10 cm -> LED ON
+
+  IMPORTANT:
+  Flame sensor modules can have different output behavior.
+  Adjust FLAME_THRESHOLD after testing your actual modules.
+*/
+
+const int ENA = 5;
+
+const int IN1 = 7;
+const int IN2 = 8;
+const int IN3 = 9;
+const int IN4 = 10;
+
+const int FLAME_LEFT   = A0;
+const int FLAME_CENTER = A1;
+const int FLAME_RIGHT  = A2;
+
+const int TRIG = 11;
+const int ECHO = 12;
+
+const int LED = 13;
+
+const int STOP_DISTANCE = 10;
+
+int readDistance() {
+
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+
+  digitalWrite(TRIG, LOW);
+
+  long duration = pulseIn(ECHO, HIGH, 30000);
+
+  if (duration == 0) return 999;
+
+  return duration * 0.0343 / 2;
+}
+
+void stopRobot() {
+
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+}
+
+void forward() {
+
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+}
+
+void turnLeft() {
+
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+}
+
+void turnRight() {
+
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+}
+
+void setup() {
+
+  pinMode(ENA, OUTPUT);
+
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+
+  pinMode(LED, OUTPUT);
+
+  analogWrite(ENA, 170);
+
+  stopRobot();
+}
+
+void loop() {
+
+  int left   = analogRead(FLAME_LEFT);
+  int center = analogRead(FLAME_CENTER);
+  int right  = analogRead(FLAME_RIGHT);
+
+  int distance = readDistance();
+
+  /*
+    You MUST test whether your flame sensor value
+    becomes higher or lower when it sees fire.
+
+    This example assumes LOWER = stronger flame.
+  */
+
+  if (distance <= STOP_DISTANCE) {
+
+    stopRobot();
+
+    digitalWrite(LED, HIGH);
+
+    while (true) {
+      // Wait for Stage 3.
+    }
+  }
+
+  if (center < left && center < right) {
+
+    forward();
+
+  } else if (left < right) {
+
+    turnLeft();
+
+  } else {
+
+    turnRight();
+  }
+
+  delay(40);
+}</code></pre>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ====================================================== -->
+<!-- STAGE 3 -->
+<!-- ====================================================== -->
+
+<section class="stage" id="stage3">
+
+  <div class="stageHeader">
+    <span class="badge">STAGE 03</span>
+    <h2>Water Attack</h2>
+    <p>
+      Use the pump, relay and servo-controlled nozzle to spray water at the fire.
+    </p>
+  </div>
+
+  <div class="lastProgress">
+    <strong>Previous progress — Stage 2</strong><br>
+    The robot has approached the fire and stopped approximately 10 cm away.
+    The LED is ON. Stage 3 adds the water system.
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>💧 Water System</h3>
+
+      <div class="parts">
+        <span class="part">300 ml Bottle</span>
+        <span class="part">Water Pump</span>
+        <span class="part">Relay Module</span>
+        <span class="part">Servo Motor</span>
+        <span class="part">Glucose Tube</span>
+        <span class="part">Hot Glue Seal</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Water Path</h3>
+
+      <p>
+        <strong>Bottle</strong>
+        →
+        <strong>Pump</strong>
+        →
+        <strong>Glucose Tube</strong>
+        →
+        <strong>Nozzle</strong>
+      </p>
+
+      <p class="tip">
+        The glucose tube is being used as both the water tube and nozzle.
+        Make sure the glue-sealed electrical/water routing is mechanically secure.
+      </p>
+    </div>
+
+    <div class="card full">
+
+      <h3>💧 Water System Diagram</h3>
+
+      <div class="wiring">
+
+        <svg viewBox="0 0 1000 500">
+
+          <rect x="80" y="150" width="180" height="230"
+                rx="35"
+                fill="#248bc1"
+                stroke="#9bdcff"
+                stroke-width="5"/>
+
+          <text x="170" y="260"
+                text-anchor="middle"
+                fill="white"
+                font-size="25"
+                font-weight="bold">
+            300 ml
+          </text>
+
+          <text x="170" y="295"
+                text-anchor="middle"
+                fill="white"
+                font-size="18">
+            WATER BOTTLE
+          </text>
+
+          <rect x="380" y="200"
+                width="170"
+                height="100"
+                rx="20"
+                fill="#252c36"
+                stroke="#8792a2"
+                stroke-width="3"/>
+
+          <text x="465" y="245"
+                text-anchor="middle"
+                fill="white"
+                font-size="22"
+                font-weight="bold">
+            PUMP
+          </text>
+
+          <text x="465" y="275"
+                text-anchor="middle"
+                fill="#cbd5e1"
+                font-size="14">
+            WATER OUT
+          </text>
+
+          <rect x="680" y="200"
+                width="170"
+                height="100"
+                rx="18"
+                fill="#263241"/>
+
+          <text x="765" y="245"
+                text-anchor="middle"
+                fill="white"
+                font-size="22"
+                font-weight="bold">
+            RELAY
+          </text>
+
+          <text x="765" y="275"
+                text-anchor="middle"
+                fill="#cbd5e1"
+                font-size="14">
+            Arduino control
+          </text>
+
+          <line x1="260" y1="260"
+                x2="380" y2="250"
+                stroke="#38bdf8"
+                stroke-width="8"/>
+
+          <line x1="550" y1="250"
+                x2="920" y2="130"
+                stroke="#38bdf8"
+                stroke-width="8"/>
+
+          <text x="720" y="145"
+                fill="var(--text)"
+                font-size="17"
+                font-weight="bold">
+            GLUCOSE TUBE
+          </text>
+
+          <circle cx="920" cy="130"
+                  r="18"
+                  fill="#e5e7eb"/>
+
+          <text x="920" y="85"
+                text-anchor="middle"
+                fill="var(--text)"
+                font-size="17"
+                font-weight="bold">
+            NOZZLE
+          </text>
+
+          <path d="M850 330 Q900 360 950 330"
+                fill="none"
+                stroke="#a855f7"
+                stroke-width="8"/>
+
+          <text x="900" y="390"
+                text-anchor="middle"
+                fill="var(--text)"
+                font-size="17">
+            SERVO ROTATES NOZZLE
+          </text>
+
+        </svg>
+
+      </div>
+
+    </div>
+
+    <div class="card full">
+
+      <h3>💻 Stage 3 Arduino C++</h3>
+
+      <button class="copy" onclick="copyCode('code3')">Copy</button>
+
+      <pre class="code" id="code3"><code>#include &lt;Servo.h&gt;
+
+/*
+  STAGE 3 — WATER ATTACK
+
+  Relay controls the water pump.
+  Servo rotates the nozzle.
+
+  IMPORTANT:
+  Relay modules may be active HIGH or active LOW.
+  Test your relay before running the pump.
+*/
+
+const int RELAY_PIN = 4;
+const int LED = 13;
+
+const int SERVO_PIN = 6;
+
+Servo nozzle;
+
+void pumpOn() {
+  digitalWrite(RELAY_PIN, LOW);
+}
+
+void pumpOff() {
+  digitalWrite(RELAY_PIN, HIGH);
+}
+
+void setup() {
+
+  pinMode(RELAY_PIN, OUTPUT);
+  pinMode(LED, OUTPUT);
+
+  nozzle.attach(SERVO_PIN);
+
+  pumpOff();
+
+  nozzle.write(90);
+
+  digitalWrite(LED, HIGH);
+}
+
+void loop() {
+
+  // Aim left
+  nozzle.write(60);
+  delay(500);
+
+  pumpOn();
+  delay(1200);
+
+  pumpOff();
+
+  // Aim center
+  nozzle.write(90);
+  delay(400);
+
+  pumpOn();
+  delay(1200);
+
+  pumpOff();
+
+  // Aim right
+  nozzle.write(120);
+  delay(500);
+
+  pumpOn();
+  delay(1200);
+
+  pumpOff();
+
+  // Return center
+  nozzle.write(90);
+
+  delay(3000);
+}</code></pre>
+
+      <div class="warning">
+        ⚠️ Keep water away from the Arduino, L298N, relay signal wiring and
+        exposed electrical connections. The pump's electrical supply must also
+        match the actual pump specification.
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ====================================================== -->
+<!-- STAGE 4 -->
+<!-- ====================================================== -->
+
+<section class="stage" id="stage4">
+
+  <div class="stageHeader">
+    <span class="badge">STAGE 04</span>
+    <h2>Navigation</h2>
+    <p>
+      The robot searches and navigates through the environment to locate the fire.
+    </p>
+  </div>
+
+  <div class="lastProgress">
+    <strong>Previous progress — Stage 3</strong><br>
+    The robot can reach the fire, stop at approximately 10 cm and operate
+    the pump/nozzle system. Stage 4 focuses on navigation.
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>Navigation Sensors</h3>
+
+      <div class="parts">
+        <span class="part">Ultrasonic Sensor</span>
+        <span class="part">3 Flame Sensors</span>
+        <span class="part">4WD Motors</span>
+        <span class="part">L298N</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Navigation Logic</h3>
+
+      <ol>
+        <li>Move forward.</li>
+        <li>Check ultrasonic distance.</li>
+        <li>If obstacle is close, stop.</li>
+        <li>Turn to find a clear path.</li>
+        <li>Continue searching.</li>
+        <li>Use flame sensors to locate fire.</li>
+      </ol>
+    </div>
+
+    <div class="card full">
+
+      <h3>🧭 Navigation Diagram</h3>
+
+      <div class="wiring">
+
+        <svg viewBox="0 0 1000 450">
+
+          <rect x="50" y="60"
+                width="900"
+                height="330"
+                rx="25"
+                fill="#111827"/>
+
+          <rect x="110" y="120"
+                width="150"
+                height="100"
+                rx="15"
+                fill="#334155"/>
+
+          <text x="185" y="165"
+                text-anchor="middle"
+                fill="white"
+                font-size="22"
+                font-weight="bold">
+            ROBOT
+          </text>
+
+          <text x="185" y="195"
+                text-anchor="middle"
+                fill="#cbd5e1">
+            START
+          </text>
+
+          <line x1="260" y1="170"
+                x2="450" y2="170"
+                stroke="#22c55e"
+                stroke-width="8"/>
+
+          <polygon points="450,170 425,155 425,185"
+                   fill="#22c55e"/>
+
+          <rect x="460" y="95"
+                width="120"
+                height="230"
+                rx="15"
+                fill="#475569"/>
+
+          <text x="520" y="220"
+                text-anchor="middle"
+                fill="white"
+                font-size="17"
+                transform="rotate(-90 520 220)">
+            OBSTACLE
+          </text>
+
+          <path d="M450 170
+                   Q610 170 650 100
+                   Q730 60 830 130"
+                fill="none"
+                stroke="#22c55e"
+                stroke-width="8"/>
+
+          <polygon points="830,130 805,115 812,145"
+                   fill="#22c55e"/>
+
+          <text x="700" y="90"
+                fill="white"
+                font-size="18">
+            CLEAR PATH
+          </text>
+
+          <circle cx="850"
+                  cy="260"
+                  r="55"
+                  fill="#ef4444"
+                  opacity=".9"/>
+
+          <text x="850"
+                y="266"
+                text-anchor="middle"
+                fill="white"
+                font-size="18"
+                font-weight="bold">
+            FIRE
+          </text>
+
+          <text x="850"
+                y="345"
+                text-anchor="middle"
+                fill="#fca5a5"
+                font-size="15">
+            FLAME DETECTED
+          </text>
 
-                <svg viewBox="0 0 1100 650">
+        </svg>
+
+      </div>
 
-                    <!-- Arduino -->
+    </div>
 
-                    <rect
-                        class="svg-board"
-                        x="30"
-                        y="100"
-                        width="240"
-                        height="330"
-                        rx="18"
-                    />
+    <div class="card full">
 
-                    <text class="svg-text" x="90" y="135">
-                        ARDUINO UNO
-                    </text>
+      <h3>💻 Stage 4 Arduino C++</h3>
 
-                    <text class="svg-small" x="55" y="180">
-                        D5 → ENA
-                    </text>
+      <button class="copy" onclick="copyCode('code4')">Copy</button>
 
-                    <text class="svg-small" x="55" y="205">
-                        D6 → ENB
-                    </text>
+      <pre class="code" id="code4"><code>/*
+  STAGE 4 — BASIC NAVIGATION
 
-                    <text class="svg-small" x="55" y="230">
-                        D7 → IN1
-                    </text>
+  Uses:
+  - HC-SR04 ultrasonic sensor
+  - 4WD motor system
 
-                    <text class="svg-small" x="55" y="255">
-                        D8 → IN2
-                    </text>
+  This is a simple obstacle-avoidance layer.
+  It can later be combined with the flame-search logic.
+*/
 
-                    <text class="svg-small" x="55" y="280">
-                        D9 → IN3
-                    </text>
+const int ENA = 5;
 
-                    <text class="svg-small" x="55" y="305">
-                        D10 → IN4
-                    </text>
+const int IN1 = 7;
+const int IN2 = 8;
+const int IN3 = 9;
+const int IN4 = 10;
 
-                    <text class="svg-small" x="55" y="345">
-                        GND → COMMON GND
-                    </text>
+const int TRIG = 11;
+const int ECHO = 12;
 
+int distanceCM() {
 
-                    <!-- L298N -->
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
 
-                    <rect
-                        class="svg-box"
-                        x="410"
-                        y="100"
-                        width="280"
-                        height="290"
-                        rx="18"
-                    />
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
 
-                    <text class="svg-text" x="510" y="140">
-                        L298N
-                    </text>
+  digitalWrite(TRIG, LOW);
 
-                    <text class="svg-small" x="440" y="180">
-                        ENA
-                    </text>
+  long duration = pulseIn(ECHO, HIGH, 30000);
 
-                    <text class="svg-small" x="440" y="205">
-                        IN1
-                    </text>
+  if (duration == 0) return 999;
 
-                    <text class="svg-small" x="440" y="230">
-                        IN2
-                    </text>
+  return duration * 0.0343 / 2;
+}
 
-                    <text class="svg-small" x="570" y="180">
-                        ENB
-                    </text>
+void stopRobot() {
 
-                    <text class="svg-small" x="570" y="205">
-                        IN3
-                    </text>
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+}
 
-                    <text class="svg-small" x="570" y="230">
-                        IN4
-                    </text>
+void forward() {
 
-                    <text class="svg-small" x="440" y="275">
-                        OUT1 + OUT2 → LEFT
-                    </text>
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
 
-                    <text class="svg-small" x="440" y="300">
-                        OUT3 + OUT4 → RIGHT
-                    </text>
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+}
 
-                    <text class="svg-small" x="440" y="345">
-                        MOTOR POWER → BATTERY
-                    </text>
-
-
-                    <!-- Breadboard -->
+void turnLeft() {
 
-                    <rect
-                        class="svg-box"
-                        x="30"
-                        y="500"
-                        width="300"
-                        height="90"
-                        rx="14"
-                    />
-
-                    <text class="svg-text" x="115" y="535">
-                        BREADBOARD
-                    </text>
-
-                    <text class="svg-small" x="80" y="560">
-                        GND RAIL = COMMON GROUND
-                    </text>
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
 
-
-                    <!-- Battery -->
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+}
 
-                    <rect
-                        class="svg-box"
-                        x="410"
-                        y="500"
-                        width="280"
-                        height="90"
-                        rx="14"
-                    />
+void turnRight() {
 
-                    <text class="svg-text" x="515" y="535">
-                        🔋 BATTERY
-                    </text>
-
-                    <text class="svg-small" x="450" y="560">
-                        + → L298N POWER
-                    </text>
-
-                    <text class="svg-small" x="575" y="560">
-                        − → COMMON GND
-                    </text>
-
-
-                    <!-- Motors -->
-
-                    <rect
-                        class="svg-motor"
-                        x="820"
-                        y="80"
-                        width="130"
-                        height="75"
-                        rx="12"
-                    />
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
 
-                    <text class="svg-text" x="875" y="115">
-                        M1
-                    </text>
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+}
 
-                    <text class="svg-small" x="840" y="138">
-                        LEFT FRONT
-                    </text>
-
-
-                    <rect
-                        class="svg-motor"
-                        x="820"
-                        y="180"
-                        width="130"
-                        height="75"
-                        rx="12"
-                    />
+void setup() {
 
-                    <text class="svg-text" x="875" y="215">
-                        M3
-                    </text>
+  pinMode(ENA, OUTPUT);
 
-                    <text class="svg-small" x="840" y="238">
-                        LEFT REAR
-                    </text>
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
 
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
 
-                    <rect
-                        class="svg-motor"
-                        x="820"
-                        y="330"
-                        width="130"
-                        height="75"
-                        rx="12"
-                    />
+  analogWrite(ENA, 170);
 
-                    <text class="svg-text" x="875" y="365">
-                        M2
-                    </text>
+  stopRobot();
+}
 
-                    <text class="svg-small" x="840" y="388">
-                        RIGHT FRONT
-                    </text>
+void loop() {
 
+  int distance = distanceCM();
 
-                    <rect
-                        class="svg-motor"
-                        x="820"
-                        y="430"
-                        width="130"
-                        height="75"
-                        rx="12"
-                    />
-
-                    <text class="svg-text" x="875" y="465">
-                        M4
-                    </text>
-
-                    <text class="svg-small" x="840" y="488">
-                        RIGHT REAR
-                    </text>
-
-
-                    <!-- Signal wires -->
-
-                    <path
-                        class="wire wire-signal"
-                        d="M270 180 C330 180 350 180 410 180"
-                    />
+  if (distance > 25) {
 
-                    <path
-                        class="wire wire-signal"
-                        d="M270 205 C330 205 350 205 410 205"
-                    />
+    forward();
 
-                    <path
-                        class="wire wire-signal"
-                        d="M270 230 C330 230 350 230 410 230"
-                    />
+  } else {
 
-                    <path
-                        class="wire wire-signal"
-                        d="M270 255 C330 255 350 255 410 255"
-                    />
+    stopRobot();
+    delay(300);
 
-                    <path
-                        class="wire wire-signal"
-                        d="M270 280 C330 280 350 280 410 280"
-                    />
+    turnRight();
+    delay(700);
 
-                    <path
-                        class="wire wire-signal"
-                        d="M270 305 C330 305 350 305 410 305"
-                    />
+    stopRobot();
+    delay(200);
+  }
+}</code></pre>
 
+    </div>
 
-                    <!-- Ground -->
+  </div>
 
-                    <path
-                        class="wire wire-ground"
-                        d="M150 430 L150 500"
-                    />
+</section>
 
-                    <path
-                        class="wire wire-ground"
-                        d="M330 545 L410 545"
-                    />
 
-                    <path
-                        class="wire wire-ground"
-                        d="M410 365 L370 365 L370 545"
-                    />
+<!-- ====================================================== -->
+<!-- STAGE 5 -->
+<!-- ====================================================== -->
+
+<section class="stage" id="stage5">
 
+  <div class="stageHeader">
+    <span class="badge">STAGE 05</span>
+    <h2>Long-Range Fire Detection</h2>
+    <p>
+      Detect and locate a fire farther away, targeting distances greater than 1 meter.
+    </p>
+  </div>
+
+  <div class="lastProgress">
+    <strong>Previous progress — Stage 4</strong><br>
+    The robot can navigate around obstacles. Stage 5 adds the long-range
+    fire-search behavior using the three flame sensors.
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>🔥 Sensor Arrangement</h3>
+
+      <div class="parts">
+        <span class="part">Left Flame Sensor</span>
+        <span class="part">Center Flame Sensor</span>
+        <span class="part">Right Flame Sensor</span>
+        <span class="part">Ultrasonic</span>
+      </div>
+    </div>
 
-                    <!-- Battery -->
+    <div class="card">
+      <h3>Target</h3>
 
-                    <path
-                        class="wire wire-power"
-                        d="M500 500 L500 390"
-                    />
+      <p>
+        🔥 Fire target: <strong>&gt; 1 meter</strong>
+      </p>
 
+      <p class="tip">
+        Actual flame-sensor range depends on the sensor module, flame size,
+        lighting conditions and orientation. Test the real sensor and tune
+        the threshold.
+      </p>
+    </div>
 
-                    <!-- Motors -->
+    <div class="card full">
 
-                    <path
-                        class="wire"
-                        d="M690 275 L780 275 L780 117 L820 117"
-                    />
+      <h3>🔥 Long-Range Detection Diagram</h3>
 
-                    <path
-                        class="wire"
-                        d="M780 275 L780 217 L820 217"
-                    />
+      <div class="wiring">
 
-                    <path
-                        class="wire"
-                        d="M690 300 L760 300 L760 367 L820 367"
-                    />
+        <svg viewBox="0 0 1000 430">
 
-                    <path
-                        class="wire"
-                        d="M760 300 L760 467 L820 467"
-                    />
+          <rect x="80" y="150"
+                width="170"
+                height="100"
+                rx="20"
+                fill="#334155"/>
 
-                    <text
-                        class="svg-small"
-                        x="700"
-                        y="70"
-                    >
-                        LEFT MOTOR PAIR
-                    </text>
+          <text x="165" y="195"
+                text-anchor="middle"
+                fill="white"
+                font-size="22"
+                font-weight="bold">
+            ROBOT
+          </text>
 
-                    <text
-                        class="svg-small"
-                        x="700"
-                        y="540"
-                    >
-                        RIGHT MOTOR PAIR
-                    </text>
+          <text x="165" y="225"
+                text-anchor="middle"
+                fill="#cbd5e1">
+            3 FLAME SENSORS
+          </text>
 
-                </svg>
+          <line x1="250" y1="200"
+                x2="760" y2="200"
+                stroke="#f59e0b"
+                stroke-width="5"
+                stroke-dasharray="15 12"/>
 
-            </div>
+          <text x="500" y="175"
+                text-anchor="middle"
+                fill="var(--text)"
+                font-size="18"
+                font-weight="bold">
+            &gt; 1 METER
+          </text>
 
-        </div>
+          <circle cx="830"
+                  cy="200"
+                  r="65"
+                  fill="#ef4444"
+                  opacity=".95"/>
 
+          <text x="830"
+                y="207"
+                text-anchor="middle"
+                fill="white"
+                font-size="22"
+                font-weight="bold">
+            FIRE
+          </text>
 
-        <div class="card">
+          <path d="M300 130 Q420 60 540 130"
+                fill="none"
+                stroke="#ff9800"
+                stroke-width="5"/>
 
-            <h3>🔌 Arduino → L298N</h3>
+          <path d="M330 260 Q450 330 570 260"
+                fill="none"
+                stroke="#ff9800"
+                stroke-width="5"/>
 
-            <table>
+          <text x="500"
+                y="380"
+                text-anchor="middle"
+                fill="var(--text)"
+                font-size="15">
+            Scan left → center → right → determine strongest flame direction
+          </text>
 
-                <thead>
-                    <tr>
-                        <th>Arduino Uno</th>
-                        <th>L298N</th>
-                        <th>Wire</th>
-                    </tr>
-                </thead>
+        </svg>
 
-                <tbody>
+      </div>
 
-                    <tr>
-                        <td>D5</td>
-                        <td>ENA</td>
-                        <td>Male-Male jumper</td>
-                    </tr>
+    </div>
 
-                    <tr>
-                        <td>D6</td>
-                        <td>ENB</td>
-                        <td>Male-Male jumper</td>
-                    </tr>
+    <div class="card full">
 
-                    <tr>
-                        <td>D7</td>
-                        <td>IN1</td>
-                        <td>Male-Male jumper</td>
-                    </tr>
+      <h3>💻 Stage 5 Arduino C++</h3>
 
-                    <tr>
-   
+      <button class="copy" onclick="copyCode('code5')">Copy</button>
+
+      <pre class="code" id="code5"><code>/*
+  STAGE 5 — LONG RANGE FIRE SEARCH
+
+  Target:
+  Detect a flame that may be farther than 1 meter.
+
+  NOTE:
+  There is no universal analog value that means
+  "fire is exactly 1 meter away."
+
+  You MUST calibrate FLAME_THRESHOLD with your
+  actual flame sensor modules.
+*/
+
+const int ENA = 5;
+
+const int IN1 = 7;
+const int IN2 = 8;
+const int IN3 = 9;
+const int IN4 = 10;
+
+const int FLAME_LEFT   = A0;
+const int FLAME_CENTER = A1;
+const int FLAME_RIGHT  = A2;
+
+const int TRIG = 11;
+const int ECHO = 12;
+
+const int FLAME_THRESHOLD = 500;
+
+int distanceCM() {
+
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+
+  digitalWrite(TRIG, LOW);
+
+  long duration = pulseIn(ECHO, HIGH, 30000);
+
+  if (duration == 0) return 999;
+
+  return duration * 0.0343 / 2;
+}
+
+void stopRobot() {
+
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+}
+
+void forward() {
+
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+}
+
+void left() {
+
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+}
+
+void right() {
+
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+}
+
+void setup() {
+
+  pinMode(ENA, OUTPUT);
+
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+
+  Serial.begin(9600);
+
+  analogWrite(ENA, 160);
+
+  stopRobot();
+}
+
+void loop() {
+
+  int leftValue   = analogRead(FLAME_LEFT);
+  int centerValue = analogRead(FLAME_CENTER);
+  int rightValue  = analogRead(FLAME_RIGHT);
+
+  int distance = distanceCM();
+
+  Serial.print("Left: ");
+  Serial.print(leftValue);
+
+  Serial.print(" Center: ");
+  Serial.print(centerValue);
+
+  Serial.print(" Right: ");
+  Serial.print(rightValue);
+
+  Serial.print(" Distance: ");
+  Serial.println(distance);
+
+  /*
+    Example assumes lower analog value = stronger flame.
+
+    If your sensor works opposite:
+    change < to >.
+  */
+
+  bool flameDetected =
+    leftValue < FLAME_THRESHOLD ||
+    centerValue < FLAME_THRESHOLD ||
+    rightValue < FLAME_THRESHOLD;
+
+  if (!flameDetected) {
+
+    // Slowly scan for fire.
+    left();
+    delay(250);
+
+    stopRobot();
+    delay(100);
+
+    continue;
+  }
+
+  /*
+    Fire direction found.
+  */
+
+  if (centerValue <= leftValue &&
+      centerValue <= rightValue) {
+
+    forward();
+
+  } else if (leftValue < rightValue) {
+
+    left();
+
+  } else {
+
+    right();
+  }
+
+  delay(100);
+}</code></pre>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <strong>🔥 Eaii Firefighter Robot</strong>
+  <br>
+  Arduino UNO • L298N • 4WD • Flame Detection • Navigation • Water System
+  <br><br>
+  Built as a team engineering guide.
+</footer>
+
+
+<script>
+
+/* =========================================================
+   THEME
+========================================================= */
+
+const themeBtn = document.getElementById("themeBtn");
+
+if(localStorage.getItem("theme") === "dark"){
+  document.body.classList.add("dark");
+  themeBtn.textContent = "☀️";
+}
+
+themeBtn.onclick = () => {
+
+  document.body.classList.toggle("dark");
+
+  const dark = document.body.classList.contains("dark");
+
+  localStorage.setItem("theme", dark ? "dark" : "light");
+
+  themeBtn.textContent = dark ? "☀️" : "🌙";
+};
+
+
+/* =========================================================
+   STAGES
+========================================================= */
+
+let currentStage = 1;
+
+function setStage(stage){
+
+  currentStage = stage;
+
+  document.querySelectorAll(".stage")
+    .forEach(el => el.classList.remove("active"));
+
+  document.querySelectorAll(".stageTab")
+    .forEach(el => el.classList.remove("active"));
+
+  document.getElementById("stage" + stage)
+    .classList.add("active");
+
+  document.querySelectorAll(".stageTab")[stage - 1]
+    .classList.add("active");
+
+  document.getElementById("progressFill").style.width =
+    (stage * 20) + "%";
+
+  document.getElementById("progressText").textContent =
+    "Stage " + stage + " / 5";
+
+  window.scrollTo({
+    top: document.querySelector("main").offsetTop - 90,
+    behavior:"smooth"
+  });
+}
+
+function scrollToStages(){
+
+  window.scrollTo({
+    top:document.querySelector(".stageNav").offsetTop - 90,
+    behavior:"smooth"
+  });
+}
+
+
+/* =========================================================
+   CHECKLIST
+========================================================= */
+
+function toggleCheck(element){
+
+  element.classList.toggle("done");
+
+  const stage =
+    element.closest(".stage").id;
+
+  const index =
+    [...element.parentElement.parentElement.children]
+    .indexOf(element.parentElement);
+
+  localStorage.setItem(
+    stage + "-check-" + index,
+    element.classList.contains("done")
+  );
+}
+
+document.querySelectorAll(".check").forEach((el,index)=>{
+
+  const stage = el.closest(".stage").id;
+
+  const saved =
+    localStorage.getItem(stage + "-check-" + index);
+
+  if(saved === "true"){
+    el.classList.add("done");
+  }
+
+});
+
+
+/* =========================================================
+   COPY CODE
+========================================================= */
+
+function copyCode(id){
+
+  const code =
+    document.getElementById(id).innerText;
+
+  navigator.clipboard.writeText(code)
+    .then(()=>{
+
+      const buttons =
+        document.querySelectorAll(".copy");
+
+      buttons.forEach(button=>{
+        if(button.getAttribute("onclick") ===
+          "copyCode('" + id + "')"){
+
+          const old = button.textContent;
+
+          button.textContent = "Copied!";
+
+          setTimeout(()=>{
+            button.textContent = old;
+          },1200);
+
+        }
+      });
+
+    });
+}
+
+
+/* =========================================================
+   INTERACTIVE 3D ROBOT
+========================================================= */
+
+const area =
+  document.getElementById("robotArea");
+
+const robot =
+  document.getElementById("robot");
+
+let dragging = false;
+
+let lastX = 0;
+let lastY = 0;
+
+let rotX = 57;
+let rotZ = -25;
+
+let zoom = 1;
+
+area.addEventListener("pointerdown",(e)=>{
+
+  dragging = true;
+
+  lastX = e.clientX;
+  lastY = e.clientY;
+
+  area.setPointerCapture(e.pointerId);
+});
+
+area.addEventListener("pointermove",(e)=>{
+
+  if(!dragging) return;
+
+  const dx = e.clientX - lastX;
+  const dy = e.clientY - lastY;
+
+  rotZ += dx * .5;
+  rotX -= dy * .5;
+
+  rotX = Math.max(10,Math.min(85,rotX));
+
+  robot.style.transform =
+    `scale(${zoom})
+     rotateX(${rotX}deg)
+     rotateZ(${rotZ}deg)`;
+
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+
+area.addEventListener("pointerup",()=>{
+  dragging = false;
+});
+
+area.addEventListener("pointercancel",()=>{
+  dragging = false;
+});
+
+area.addEventListener("wheel",(e)=>{
+
+  e.preventDefault();
+
+  zoom += e.deltaY < 0 ? .08 : -.08;
+
+  zoom =
+    Math.max(.65,Math.min(1.6,zoom));
+
+  robot.style.transform =
+    `scale(${zoom})
+     rotateX(${rotX}deg)
+     rotateZ(${rotZ}deg)`;
+
+},{passive:false});
+
+
+/* =========================================================
+   KEYBOARD STAGE NAVIGATION
+========================================================= */
+
+document.addEventListener("keydown",(e)=>{
+
+  if(e.key === "ArrowRight" && currentStage < 5){
+
+    setStage(currentStage + 1);
+
+  }
+
+  if(e.key === "ArrowLeft" && currentStage > 1){
+
+    setStage(currentStage - 1);
+
+  }
+
+});
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+setStage(1);
+
+</script>
+
+</body>
+</html>
+```
